@@ -3,21 +3,28 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaKey, FaArrowLeft, FaCheck } from "react-icons/fa";
 import axios from "axios";
+import { useSearchParams, useRouter } from "next/navigation";
 
-const VerifyCode = ({ email, onVerified }: { 
-  email: string; 
-  onVerified: (token: string) => void 
-}) => {
+const VerifyCode = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const email = searchParams.get("email") || "";
+  
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
+    if (!email) {
+      router.push("/forgot-password");
+      return;
+    }
+    
     if (inputsRef.current[0]) {
       inputsRef.current[0]?.focus();
     }
-  }, []);
+  }, [email, router]);
 
   const handleChange = (index: number, value: string) => {
     if (value.length > 1) return;
@@ -61,8 +68,9 @@ const VerifyCode = ({ email, onVerified }: {
 
       if (response.data.success) {
         setMessage("Code verified successfully!");
+        // Redirect to reset password page with token
         setTimeout(() => {
-          onVerified(response.data.resetToken);
+          router.push(`/reset-password?token=${response.data.resetToken}`);
         }, 1000);
       } else {
         setMessage(response.data.message || "Invalid code");
@@ -91,6 +99,24 @@ const VerifyCode = ({ email, onVerified }: {
       setLoading(false);
     }
   };
+
+  if (!email) {
+    return (
+      <div className="text-center py-8">
+        <div className="h-16 w-16 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <FaKey size={32} />
+        </div>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Email Required</h3>
+        <p className="text-gray-600 mb-4">Please request a password reset first.</p>
+        <a
+          href="/forgot-password"
+          className="text-blue-600 hover:text-blue-800 font-medium"
+        >
+          Go to Forgot Password
+        </a>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -157,7 +183,7 @@ const VerifyCode = ({ email, onVerified }: {
 
       <button
         type="button"
-        onClick={() => window.history.back()}
+        onClick={() => router.push("/forgot-password")}
         className="w-full text-gray-600 hover:text-gray-800 mt-4 flex items-center justify-center"
       >
         <FaArrowLeft className="mr-2" /> Use different email
