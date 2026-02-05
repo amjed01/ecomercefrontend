@@ -41,12 +41,9 @@ interface FormData {
 }
 
 const categories: Category[] = [
-  { value: 'electronics', label: 'Electronics' },
+  { value: 'laptops', label: 'laptops' },
   { value: 'smartphones', label: 'smartphones' },
-  { value: 'home', label: 'Home & Kitchen' },
-  { value: 'beauty', label: 'Beauty' },
-  { value: 'sports', label: 'Sports' },
-  { value: 'other', label: 'Other' }
+  { value: 'tablets', label: 'tablets' }
 ];
 
 const API_BASE_URL = "https://ecomercebackend-654m.onrender.com/api";

@@ -25,7 +25,7 @@ interface ProductImage {
 const CATEGORIES = [
   { id: 'smartphones', name: 'smartphones' },
   { id: 'tablets', name: 'tablets' },
-  { id: 'smartwatches', name: 'smartwatches' },
+  { id: 'laptops', name: 'laptops' },
 ];
 
 export default function AddProduct() {

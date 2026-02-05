@@ -22,8 +22,8 @@ const Hero = () => {
     },
     {
       img: "../../laptop.png",
-      title: "Smartwatches",
-      category: "smartwatches",
+      title: "laptop",
+      category: "laptop",
     },
   ];
 
