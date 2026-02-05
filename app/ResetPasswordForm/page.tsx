@@ -1,15 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { FaLock, FaCheck, FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
+import { useSearchParams, useRouter } from "next/navigation";
 
-const ResetPasswordForm = ({ token }: { token: string }) => {
+const ResetPasswordForm = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const token = searchParams.get("token") || "";
+  
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
+  const [isValidToken, setIsValidToken] = useState(true);
+
+  useEffect(() => {
+    if (!token) {
+      setMessage("Invalid or expired reset link. Please request a new password reset.");
+      setIsValidToken(false);
+    }
+  }, [token]);
 
   const handleSubmit = async (values: { 
     newPassword: string; 
@@ -32,7 +45,7 @@ const ResetPasswordForm = ({ token }: { token: string }) => {
         setMessage("Password reset successfully! Redirecting to login...");
         
         setTimeout(() => {
-          window.location.href = "/login";
+          router.push("/login");
         }, 2000);
       } else {
         setMessage(response.data.message || "Failed to reset password");
@@ -43,6 +56,24 @@ const ResetPasswordForm = ({ token }: { token: string }) => {
       setLoading(false);
     }
   };
+
+  if (!isValidToken) {
+    return (
+      <div className="text-center py-8">
+        <div className="h-16 w-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <FaLock size={32} />
+        </div>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Invalid Reset Link</h3>
+        <p className="text-gray-600 mb-4">{message}</p>
+        <a
+          href="/forgot-password"
+          className="text-blue-600 hover:text-blue-800 font-medium"
+        >
+          Request a new reset link
+        </a>
+      </div>
+    );
+  }
 
   if (success) {
     return (
@@ -136,7 +167,7 @@ const ResetPasswordForm = ({ token }: { token: string }) => {
 
             <button
               type="submit"
-              disabled={!isValid || loading}
+              disabled={!isValid || loading || !token}
               className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 flex items-center justify-center mt-4"
             >
               {loading ? "Resetting..." : (
