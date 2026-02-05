@@ -15,8 +15,8 @@ interface UserData {
 }
 
 // Default images
-const DEFAULT_PROFILE_PHOTO = "https://placehold.co/150x150/6366f1/ffffff?text=Profile";
-const DEFAULT_COVER_PHOTO = "https://placehold.co/1000x256/1f2937/6b7280?text=Cover+Photo";
+const DEFAULT_PROFILE_PHOTO = "";
+const DEFAULT_COVER_PHOTO = "";
 
 export default function Profile() {
   const router = useRouter();
