@@ -6,11 +6,7 @@ import * as yup from "yup";
 import { FaEnvelope, FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
 
-type Props = {
-  onEmailSent: (email: string) => void;
-};
-
-export default function ForgotPasswordEmailForm({ onEmailSent }: Props) {
+export default function Page() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -26,9 +22,7 @@ export default function ForgotPasswordEmailForm({ onEmailSent }: Props) {
 
       if (response.data.success) {
         setMessage("Verification code sent to your email");
-        setTimeout(() => {
-          onEmailSent(values.email);
-        }, 1500);
+        // You can redirect here later if you want
       } else {
         setMessage(response.data.message || "Failed to send code");
       }
@@ -43,11 +37,19 @@ export default function ForgotPasswordEmailForm({ onEmailSent }: Props) {
     <div>
       <div className="mb-6 text-center">
         <h3 className="text-xl font-bold text-gray-900">Reset Your Password</h3>
-        <p className="text-gray-600 mt-2">Enter your email to receive a verification code</p>
+        <p className="text-gray-600 mt-2">
+          Enter your email to receive a verification code
+        </p>
       </div>
 
       {message && (
-        <div className={`p-3 rounded-lg mb-4 ${message.includes("sent") ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}>
+        <div
+          className={`p-3 rounded-lg mb-4 ${
+            message.includes("sent")
+              ? "bg-green-100 text-green-800"
+              : "bg-yellow-100 text-yellow-800"
+          }`}
+        >
           {message}
         </div>
       )}
@@ -55,11 +57,19 @@ export default function ForgotPasswordEmailForm({ onEmailSent }: Props) {
       <Formik
         initialValues={{ email: "" }}
         validationSchema={yup.object({
-          email: yup.string().email("Invalid email").required("Email is required")
+          email: yup.string().email("Invalid email").required("Email is required"),
         })}
         onSubmit={handleSubmit}
       >
-        {({ handleChange, handleBlur, touched, handleSubmit, values, errors, isValid }) => (
+        {({
+          handleChange,
+          handleBlur,
+          touched,
+          handleSubmit,
+          values,
+          errors,
+          isValid,
+        }) => (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
