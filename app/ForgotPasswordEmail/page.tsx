@@ -6,14 +6,18 @@ import * as yup from "yup";
 import { FaEnvelope, FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
 
-const ForgotPasswordEmail = ({ onEmailSent }: { onEmailSent: (email: string) => void }) => {
+type Props = {
+  onEmailSent: (email: string) => void;
+};
+
+export default function ForgotPasswordEmailForm({ onEmailSent }: Props) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (values: { email: string }) => {
     setLoading(true);
     setMessage("");
-    
+
     try {
       const response = await axios.post(
         "https://ecomercebackend-654m.onrender.com/api/auth/forgot-password",
@@ -97,6 +101,4 @@ const ForgotPasswordEmail = ({ onEmailSent }: { onEmailSent: (email: string) => 
       </Formik>
     </div>
   );
-};
-
-export default ForgotPasswordEmail;
+}
