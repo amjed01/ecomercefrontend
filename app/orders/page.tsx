@@ -4,7 +4,7 @@ import axios from "axios";
 
 // --- START: Dependency Mocking and Replacement ---
 const mockRouter = {
-  push: (path) => {
+  push: (path: string) => {
     console.log(`[MOCK NAVIGATION] Attempted to navigate to: ${path}`);
     // In real implementation, this would be: router.push(path)
   },
