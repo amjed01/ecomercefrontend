@@ -187,9 +187,10 @@ const handleSubmit = async (e: React.FormEvent) => {
 
     // DEBUG: Check what's being sent
     console.log('Uploading images:', images.length);
-    for (let pair of data.entries()) {
-      console.log(pair[0], pair[1]);
-    }
+data.forEach((value, key) => {
+  console.log(key, value);
+});
+
 
     const response = await axios.post('https://ecomercebackend-654m.onrender.com/api/products', data, {
       headers: {
