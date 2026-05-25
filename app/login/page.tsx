@@ -29,46 +29,13 @@ const LoginPage: React.FC = () => {
   const [loader, setLoader] = useState(false);
   const [obscureText, setObscureText] = useState(true);
 
-  // Default seller credentials
-  const defaultSeller = {
-    email: "seller@peakbuy.com",
-    password: "seller1234",
-  };
+  
 
   const handleLogin = async (values: { email: string; password: string }) => {
     setLoader(true);
     try {
       // Check if it's the default seller
-      if (
-        values.email === defaultSeller.email &&
-        values.password === defaultSeller.password
-      ) {
-        // Create mock seller data
-        const mockSellerData = {
-          token: "default_seller_token_" + Date.now(),
-          _id: "default_seller_id",
-          email: defaultSeller.email,
-          role: "seller",
-          store: {
-            id: "default_store_id",
-            name: "Peakbuy Default Store",
-            description: "Welcome to our default seller store",
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          },
-        };
-
-        // Store in localStorage for web
-        localStorage.setItem("authToken", mockSellerData.token);
-        localStorage.setItem("userId", mockSellerData._id);
-        localStorage.setItem("userData", JSON.stringify(mockSellerData));
-        localStorage.setItem("userRole", mockSellerData.role);
-        localStorage.setItem("storeData", JSON.stringify(mockSellerData.store));
-
-        // Redirect to seller dashboard
-        window.location.href = "/seller/dashboard";
-        return;
-      }
+     
 
       // Regular login flow for other users
       const endpoint = "https://ecomercebackend-654m.onrender.com/api/auth/login";
@@ -116,10 +83,7 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const fillDefaultSeller = (setFieldValue: any) => {
-    setFieldValue("email", defaultSeller.email);
-    setFieldValue("password", defaultSeller.password);
-  };
+ 
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100/50 [background-image:radial-gradient(ellipse_at_top,_var(--tw-color-gray-50)_0%,_var(--tw-color-gray-200)_100%)]">
